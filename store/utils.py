@@ -9,3 +9,13 @@ def authenticate_custom_user(request, username, password):
     except MyUser.DoesNotExist:
         return None
     return None
+
+
+import json
+from datetime import datetime
+
+class DateTimeEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return super().default(obj)

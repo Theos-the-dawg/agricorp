@@ -23,6 +23,4 @@ urlpatterns = [
     path('',include('store.urls')),
 ]
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-]
+
