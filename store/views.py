@@ -24,29 +24,14 @@ def about():
 
 def harvest_data(request,data):
    
-   json_data = json.loads(data)
-   my_instance = Harvest.objects.create(crops=json_data)
-   my_instance = my_instance.save(commit=False)
-   my_instance.save()
-            
-            # Perform additional operations
-   #my_instance.additional_field = "Some additional data"
-            
-            # Save the instance to the database
-    
+ pass
 
 def insert_json_data(request):
-    if request.method == 'POST':
-        form = HarvestForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('some_view_name')
-    else:
-        form =HarvestForm()
 
-    return render(request, 'insert_json_data.html', {'form': form})
+ """ MODELL INSTANCE TO UP LOAD JSON DATA FROM EACH FIELD IN THE DATA TABLE MUST BE POPULATED!"""
 
-\
+pass
+
 def contact():
     pass
 
