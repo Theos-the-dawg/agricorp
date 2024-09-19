@@ -30,8 +30,13 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
 
+# views.py
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 
-
+def logout_view(request):
+    logout(request)
+    return redirect('login')  # Redirect to the login page or home page after logout
 
 def harvest_data(request,data):
    

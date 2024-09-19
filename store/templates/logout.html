@@ -1,11 +1,10 @@
+<!-- templates/logout.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Logout</title>
 </head>
 <body>
     <nav>
@@ -13,14 +12,9 @@
             <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="{% url 'login' %}">login</a></li>
             <li><a href="{% url 'logout' %}">Logout</a></li>
-            <li><a href="{% url 'register' %}">register</a></li>
         </ul>
     </nav>
-    <h2>Register</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Register</button>
-    </form>
+    <h1>You have successfully logged out.</h1>
+    <p>Click here to <a href="{% url 'login' %}">login again</a>.</p>
 </body>
 </html>
