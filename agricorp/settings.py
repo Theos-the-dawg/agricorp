@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'store',
-    'shell_plus',
     'django_extensions',
 ]
 
@@ -113,13 +112,17 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+#if not logged in redirect to login
+LOGIN_URL = 'login'
 
+# Redirect after login
+LOGIN_REDIRECT_URL = 'home'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATICFILES_DIRS = [BASE_DIR / "static"]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
