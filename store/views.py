@@ -56,15 +56,11 @@ def login_view(request):
 
 @login_required
 def logout_view(request):
- if request.method == 'POST':
-        if 'confirm' in request.POST:
-            # If the user confirmed, log them out
-            logout(request)
-            return redirect('home')  # Redirect to home or another page after logout
-        else:
-            # If the user clicked "Cancel", redirect them back to home or dashboard
-            return redirect('home')  # You can change 'home' to your preferred URL
- return render(request, 'logout.html')
+     if request.user.is_authenticated:
+        # User is authenticated, proceed with the logic
+        logout(request)
+        return redirect(request, 'home.html')
+     return render(request, 'logout.html')
 
 def harvest_data(request,data):
    
