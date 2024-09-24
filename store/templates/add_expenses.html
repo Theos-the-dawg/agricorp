@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Expenses</title>
+    <script>
+        function addForm() {
+            // Get the formset container where the forms are added
+            const formContainer = document.getElementById('form-container');
+            const totalForms = document.getElementById('id_form-TOTAL_FORMS');
+            const currentFormCount = formContainer.getElementsByClassName('expense-form').length;
+            
+            // Clone the first form and reset its values
+            const newForm = document.getElementsByClassName('expense-form')[0].cloneNode(true);
+            const regex = new RegExp(`form-0`, 'g');
+            newForm.innerHTML = newForm.innerHTML.replace(regex, `form-${currentFormCount}`);
+            
+            // Reset the input values
+            const inputs = newForm.getElementsByTagName('input');
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].value = '';
+            }
+            
+            formContainer.appendChild(newForm);
+            
+            // Increment the total forms count
+            totalForms.value = parseInt(totalForms.value) + 1;
+        }
+
+        function removeForm(button) {
+            const formContainer = document.getElementById('form-container');
+            const totalForms = document.getElementById('id_form-TOTAL_FORMS');
+            
+            if (formContainer.getElementsByClassName('expense-form').length > 1) {
+                button.closest('.expense-form').remove();
+                totalForms.value = parseInt(totalForms.value) - 1;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Add Expenses</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        
+        <div id="form-container">
+            {% for form in formset %}
+                <div class="expense-form">
+                    <label>Category: {{ form.category }}</label>
+                    <label>Amount: {{ form.amount }}</label>
+                    <button type="button" onclick="removeForm(this)">Remove</button>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <button type="button" onclick="addForm()">Add More</button>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

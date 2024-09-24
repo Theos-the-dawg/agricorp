@@ -1,0 +1,64 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout Confirmation</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/logout.css' %}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'login' %}">login</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            <li><a href="{% url 'register' %}">register</a></li>
+        </ul>
+    </nav>
+    <div class="logout-container">
+        <h1>Are you sure you want to logout?{{ request.user.username }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" name="confirm" value="yes">Yes, Logout</button>
+            <button type="submit" name="cancel" value="no">Cancel</button>
+        </form>
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    </div>
+    
+</body>
+</html>
+
+-->
+<!-- confirm_logout.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Logout</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'login' %}">login</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            <li><a href="{% url 'register' %}">register</a></li>
+        </ul>
+    </nav>
+    <h1>Are you sure you want to log out? {{ request.user.username }}</h1>
+    <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Yes, Logout</button>
+    </form>
+    <a href="{% url 'home' %}">Cancel</a>
+</body>
+</html>

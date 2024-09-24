@@ -1,14 +1,8 @@
 from django import forms
-from .models import Harvest
+from .models import ExpenseEntry, ExpenseCategory
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
-class HarvestForm(forms.ModelForm):
-    class Meta:
-        model = Harvest
-        fields = ['crops']
-
-
+from django.forms import formset_factory
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -33,3 +27,11 @@ class CustomUserCreationForm(UserCreationForm):
 class LoginForm(forms.Form):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}), label="")
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}), label="")
+
+
+class ExpenseEntryForm(forms.ModelForm):
+    class Meta:
+        model = ExpenseEntry
+        fields = ['category', 'amount']
+
+ExpenseEntryFormSet = formset_factory(ExpenseEntryForm, extra=5)  # Allows 5 extra entries

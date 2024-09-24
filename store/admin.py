@@ -1,4 +1,6 @@
 from django.contrib import admin
-from .models import Harvest
+from .models import ExpenseCategory,ExpenseEntry,Expense
 # Register your models here.
-admin.site.register(Harvest)
+admin.site.register(ExpenseEntry)
+admin.site.register(ExpenseCategory)
+admin.site.register(Expense)

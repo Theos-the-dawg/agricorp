@@ -1,17 +1,13 @@
 from django.views.decorators.csrf import csrf_exempt
-
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.http import HttpResponse
 from django.contrib.auth import authenticate,login,logout
-from .models import Harvest
+from .models import ExpenseEntry,Expense
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .forms import HarvestForm,CustomUserCreationForm,LoginForm
+from .forms import CustomUserCreationForm, ExpenseEntryFormSet,LoginForm
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib import messages
-
+from datetime import datetime
 
 @csrf_exempt
 def home_view(request):
@@ -54,24 +50,29 @@ def login_view(request):
 
     return render(request, 'login.html', {'form': form})
 
-@login_required
-def logout_view(request):
-     if request.user.is_authenticated:
-        # User is authenticated, proceed with the logic
+
+
+def confirm_logout_view(request):
+    if request.method == 'POST':
         logout(request)
-        return redirect(request, 'home.html')
-     return render(request, 'logout.html')
+        return redirect('home')
+    else:
+       return redirect('login')    
 
-def harvest_data(request,data):
-   
- pass
+def add_expenses(request):
+    if request.method == 'POST':
+        formset = ExpenseEntryFormSet(request.POST)
+        if formset.is_valid():
+            expense = Expense.objects.create(date=datetime.now())
+            for form in formset:
+                if form.cleaned_data:
+                    ExpenseEntry.objects.create(
+                        expense=expense,
+                        category=form.cleaned_data['category'],
+                        amount=form.cleaned_data['amount']
+                    )
+            return redirect('home') 
+    else:
+        formset = ExpenseEntryFormSet()
 
-def insert_json_data(request):
-
- """ MODELL INSTANCE TO UP LOAD JSON DATA FROM EACH FIELD IN THE DATA TABLE MUST BE POPULATED!"""
-
-pass
-
-def contact():
-    pass
-
+    return render(request, 'add_expenses.html', {'formset': formset})

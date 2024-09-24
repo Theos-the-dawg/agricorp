@@ -1,39 +1,57 @@
 from django.db import models
-from datetime import datetime
 
-class Invoice(models.Model):
-    Accounting =models.DecimalField(max_digits=10, decimal_places=2)
-    Advertising =models.DecimalField(max_digits=10, decimal_places=2)
-    Bank_Charges = models.DecimalField(max_digits=10, decimal_places=2)
-    Cleaning = models.DecimalField(max_digits=10, decimal_places=2)
-    Borehole_Implements = models.DecimalField(max_digits=10, decimal_places=2)
-    Tractor_Hiring = models.DecimalField(max_digits=10, decimal_places=2)
-    Tomato_Trellising_Twine = models.DecimalField(max_digits=10, decimal_places=2)
-    Consulting_Fees = models.DecimalField(max_digits=10, decimal_places=2)
-    Council_Unit_Tax = models.DecimalField(max_digits=10, decimal_places=2)
-    Medicines_Vet = models.DecimalField(max_digits=10, decimal_places=2)
-    Fuels_Oils = models.DecimalField(max_digits=10, decimal_places=2)
-    Spraying_Chemicals = models.DecimalField(max_digits=10, decimal_places=2)
-    General_Expenses = models.DecimalField(max_digits=10, decimal_places=2)
-    Insurance_Licenses = models.DecimalField(max_digits=10, decimal_places=2)
-    Stockfeeds = models.DecimalField(max_digits=10, decimal_places=2)
-    MotorVehicle_Maintenance = models.DecimalField(max_digits=10, decimal_places=2)
-    Tractor_Repairs = models.DecimalField(max_digits=10, decimal_places=2)
-    Seeds_Tomatoes = models.DecimalField(max_digits=10, decimal_places=2)
-    Seeds_Beans = models.DecimalField(max_digits=10, decimal_places=2)
-    Salaries_Wages = models.DecimalField(max_digits=10, decimal_places=2)
-    Security = models.DecimalField(max_digits=10, decimal_places=2)
-    Fertiliser = models.DecimalField(max_digits=10, decimal_places=2)
-    Telephones_Fax_Internet = models.DecimalField(max_digits=10, decimal_places=2)
-    Training = models.DecimalField(max_digits=10, decimal_places=2)
-    Travelling = models.DecimalField(max_digits=10, decimal_places=2)
-    Staff_Welfare = models.DecimalField(max_digits=10, decimal_places=2)
-    Loan_Repayment = models.DecimalField(max_digits=10, decimal_places=2)
 
-class Harvest(models.Model):
-    crop = models.CharField(max_length=50)
-    crops = models.JSONField()
-    date_harvested= models.DateField(default=datetime.now())
+class Expense(models.Model):
+    date = models.DateField()
+    description = models.TextField(blank=True, null=True)
 
-def __str__(self):
-    return self.crop
+    def __str__(self):
+        return f"Expenses for {self.date}"
+
+
+class ExpenseCategory(models.Model):
+    expense = models.ForeignKey(Expense, on_delete=models.CASCADE, related_name="entries")
+    category_name = models.CharField(max_length=100)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.category_name}: {self.amount}"
+    
+
+CATEGORY_CHOICES = [
+     ('Accounting', 'Accounting'),
+        ('Advertising', 'Advertising'),
+        ('Bank Charges', 'Bank Charges'),
+        ('Cleaning', 'Cleaning'),
+        ('Borehole Implements', 'Borehole Implements'),
+        ('Tractor Hiring', 'Tractor Hiring'),
+        ('Tomato Trellising Twine', 'Tomato Trellising Twine'),
+        ('Consulting Fees', 'Consulting Fees'),
+        ('Council Unit Tax', 'Council Unit Tax'),
+        ('Medicines Vet', 'Medicines Vet'),
+        ('Fuels Oils', 'Fuels Oils'),
+        ('Spraying Chemicals', 'Spraying Chemicals'),
+        ('General Expenses', 'General Expenses'),
+        ('Insurance Licenses', 'Insurance Licenses'),
+        ('Stockfeeds', 'Stockfeeds'),
+        ('MotorVehicle Maintenance', 'MotorVehicle Maintenance'),
+        ('Tractor Repairs', 'Tractor Repairs'),
+        ('Seeds Tomatoes', 'Seeds Tomatoes'),
+        ('Seeds Beans', 'Seeds Beans'),
+        ('Salaries Wages', 'Salaries Wages'),
+        ('Security', 'Security'),
+        ('Fertiliser', 'Fertiliser'),
+        ('Telephones Fax Internet', 'Telephones Fax Internet'),
+        ('Training', 'Training'),
+        ('Travelling', 'Travelling'),
+        ('Staff Welfare', 'Staff Welfare'),
+        ('Loan Repayment', 'Loan Repayment'),
+]
+
+class ExpenseEntry(models.Model):
+    expense = models.ForeignKey(Expense, on_delete=models.CASCADE, related_name='expense_entries')
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.category} - {self.amount}"
