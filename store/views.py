@@ -86,9 +86,6 @@ def generate_dataframe(request):
     todays_expense_df = pd.DataFrame(list(todays_expense))
     print(todays_expense_df)#dataframe contain data for the day 
 
-    #create a neat labeled dataframe that show data 
-
-
 
     #average for weekly
     today = datetime.today()
@@ -111,8 +108,9 @@ def generate_dataframe(request):
   
     #average for yearly  today = datetime.today()
     last_years_date = datetime.today() - relativedelta(years=1)
-    year_expense = (ExpenseEntry.objects.filter(expense__date__range=[last_years_date,today])
-         .values('id','expense','expense_id','category','amount','expense__date'))
+    year_expense = (ExpenseEntry.objects
+                    .filter(expense__date__range=[last_years_date,today])
+                    .values('id','expense','expense_id','category','amount','expense__date'))
     yearly_df = pd.DataFrame(list(year_expense))
     print(yearly_df)
     
@@ -125,8 +123,8 @@ def generate_dataframe(request):
     yearly_df_html = yearly_df.to_html(classes="table table-striped", index=False)
 
     # Pass the HTML table to the template
-    return render(request, 'dataframe.html', {'daily_df': daily_df,
+    return render(request, 'dataframe.html', {'daily_df': daily_df,#change name to fit with other fir df names
                                               'weekly_df':weekly_df_html,
                                               'monthly_df':monthly_df_html,
-                                              'yearly':yearly_df_html})
+                                              'yearly_df':yearly_df_html})
     
