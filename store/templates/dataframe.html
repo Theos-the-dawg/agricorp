@@ -26,6 +26,16 @@
     </style>
 </head>
 <body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'login' %}">login</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            <li><a href="{% url 'register' %}">register</a></li>
+            <li><a href="{% url 'generate_dataframe' %}">dataframe</a></li>
+            <li><a href="{% url 'add_expenses' %}">add_expenses</a></li>
+        </ul>
+    </nav>
     <h1>DataFrame Table for daily</h1>
     <div class="container">
         {{ daily_df|safe }}  <!-- Display the DataFrame HTML -->

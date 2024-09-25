@@ -6,8 +6,7 @@ from .models import ExpenseEntry,Expense
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .forms import CustomUserCreationForm, ExpenseEntryFormSet,LoginForm
-from django.views.decorators.csrf import csrf_exempt
-from datetime import datetime, timedelta
+from datetime import datetime
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 
@@ -59,6 +58,7 @@ def confirm_logout_view(request):
     else:
        return redirect('login')    
 
+@login_required
 def add_expenses(request):
     if request.method == 'POST':
         formset = ExpenseEntryFormSet(request.POST)
