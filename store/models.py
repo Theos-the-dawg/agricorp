@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Expense(models.Model):
@@ -49,6 +50,7 @@ CATEGORY_CHOICES = [
 ]
 
 class ExpenseEntry(models.Model):
+    reporter = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='reporter')
     expense = models.ForeignKey(Expense, on_delete=models.CASCADE, related_name='expense_entries')
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
