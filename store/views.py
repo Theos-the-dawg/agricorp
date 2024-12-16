@@ -52,7 +52,7 @@ def login_view(request):
 
 
 def confirm_logout_view(request):
-    if request.method == 'POST':
+    if request.user is not None:
         logout(request)
         return redirect('home')
     else:
