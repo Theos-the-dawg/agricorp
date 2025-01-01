@@ -5,21 +5,67 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    
+    <title>Home Page - Agriculture Portal</title>
+    <link rel="stylesheet" href="{% static 'home.css' %}">
 </head>
 <body>
+    <!-- Navigation Bar -->
     <nav>
         <ul>
             <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'login' %}">login</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
             <li><a href="{% url 'logout' %}">Logout</a></li>
-            <li><a href="{% url 'register' %}">register</a></li>
-            <li><a href="{% url 'generate_dataframe' %}">dataframe</a></li>
-            <li><a href="{% url 'add_expenses' %}">add_expenses</a></li>
+            <li><a href="{% url 'register' %}">Register</a></li>
+            <li><a href="{% url 'generate_dataframe' %}">Dataframe</a></li>
+            <li><a href="{% url 'add_expenses' %}">Add Expenses</a></li>
         </ul>
     </nav>
-    <h1>Welcome to the Home Page, {{ request.user.username }}!</h1>
+
+    <!-- Hero Section -->
+    <header>
+        <div class="hero">
+            <h1>Welcome to the Agriculture Portal</h1>
+            <p>Your trusted companion for modern farming and resource management.</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- User Greeting -->
+        <section class="greeting">
+            <h2>Hello, {{ request.user.username }}!</h2>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <h2>Our Features</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <h3>Expense Tracking</h3>
+                    <p>Keep track of your agricultural expenses with ease.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Data Analysis</h3>
+                    <p>Generate insights and analyze data for better decisions.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Resource Planning</h3>
+                    <p>Optimize the use of resources for maximum efficiency.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="cta">
+            <h2>Join Us Today!</h2>
+            <p>Start managing your agricultural operations more effectively.</p>
+            <a href="{% url 'register' %}" class="btn">Get Started</a>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Agriculture Portal. All rights reserved.</p>
+    </footer>
 </body>
 </html>
