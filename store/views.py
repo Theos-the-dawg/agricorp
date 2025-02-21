@@ -81,7 +81,8 @@ def add_expenses(request):
         formset = ExpenseEntryFormSet()
 
     return render(request, 'add_expenses.html', {'formset': formset})
-
+    
+@login_required
 def generate_dataframe(request):
 
     #average for daily 
