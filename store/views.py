@@ -1,3 +1,4 @@
+from django.contrib.auth.forms import UsernameField
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -26,27 +27,30 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
 
+
+@csrf_exempt
 def login_view(request):
     form = LoginForm(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
-            email = form.cleaned_data.get('email')
+           # email = form.cleaned_data.get('email')
+            username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
 
             try:
-                user = User.objects.get(email=email)
+                user = User.objects.get(username=username)
             except user.DoesNotExist:
                 user = None
                 messages.error(request, 'User does not exist.')
 
             if user is not None:
                 # Authenticate the user
-                authenticated_user = authenticate(request, email=email, password=password)
+                authenticated_user = authenticate(request, username=username, password=password)
                 if authenticated_user is not None:
                     login(request, authenticated_user)
                     return redirect('home')
                 else:
-                    messages.error(request, 'Invalid email or password.')              
+                    messages.error(request, 'Invalid username or password.')              
 
     return render(request, 'login.html', {'form': form})
 
@@ -57,6 +61,7 @@ def confirm_logout_view(request):
         return redirect('home')
     else:
        return redirect('login')    
+
 
 @login_required
 def add_expenses(request):

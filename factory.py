@@ -1,4 +1,2 @@
-import factory
-import faker
-
+from factory import *
 
