@@ -57,7 +57,7 @@ def login_view(request):
 
 def confirm_logout_view(request):
     if request.user is not None:
-        logout(request)
+        logout(request.user)
         return redirect('home')
     else:
        return redirect('login')    

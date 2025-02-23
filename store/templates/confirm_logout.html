@@ -57,7 +57,7 @@
     <h1>Are you sure you want to log out? {{ request.user.username }}</h1>
     <form method="POST" action="{% url 'logout' %}">
         {% csrf_token %}
-        <button type="submit">Yes, Logout</button>
+        <a href="{% url 'home' %}">  <button type="submit">Yes, Logout</button></a>
     </form>
     <a href="{% url 'home' %}">Cancel</a>
 </body>
