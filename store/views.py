@@ -10,6 +10,8 @@ from .forms import CustomUserCreationForm, ExpenseEntryFormSet,LoginForm
 from datetime import datetime
 import pandas as pd
 from dateutil.relativedelta import relativedelta
+import pdb
+
 
 @csrf_exempt
 def home_view(request):
@@ -18,46 +20,51 @@ def home_view(request):
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
+        registration_form = CustomUserCreationForm(request.POST)
+       
+        if  registration_form.is_valid():
+            user =  registration_form.save()
+           
             login(request, user)  
+           
             return redirect('home') 
     else:
-        form = CustomUserCreationForm()
-    return render(request, 'register.html', {'form': form})
-
+        registration_form = CustomUserCreationForm()
+       
+    return render(request, 'register.html', {' registration_form':  registration_form})
 
 @csrf_exempt
 def login_view(request):
-    form = LoginForm(request.POST or None)
     if request.method == 'POST':
-        if form.is_valid():
-           # email = form.cleaned_data.get('email')
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+        login_form = LoginForm(request.POST)
+    else:
+        login_form = LoginForm(None)
+    
+    if login_form.is_valid():
+        username = login_form.cleaned_data.get('username')
+        password = login_form.cleaned_data.get('password')
+        
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            user = None
+            messages.error(request, 'User does not exist.')
 
-            try:
-                user = User.objects.get(username=username)
-            except user.DoesNotExist:
-                user = None
-                messages.error(request, 'User does not exist.')
+        if user is not None:
+            # Authenticate the user
+            authenticated_user = authenticate(request, username=username, password=password)
+            if authenticated_user is not None:
+                login(request, authenticated_user)
+                return redirect('home')
+            else:
+                messages.error(request, 'Invalid username or password.')
 
-            if user is not None:
-                # Authenticate the user
-                authenticated_user = authenticate(request, username=username, password=password)
-                if authenticated_user is not None:
-                    login(request, authenticated_user)
-                    return redirect('home')
-                else:
-                    messages.error(request, 'Invalid username or password.')              
-
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'login.html', {'login_form': login_form})
 
 
 def confirm_logout_view(request):
     if request.user is not None:
-        logout(request.user)
+        logout(request)
         return redirect('home')
     else:
        return redirect('login')    
