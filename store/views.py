@@ -48,12 +48,12 @@ def login_view(request):
             user = User.objects.get(username=username)
         except User.DoesNotExist:
             user = None
-            messages.error(request, 'User does not exist.')
+            messages.error(request, "Username or password is incorrect.")
 
         if user is not None:
             # Authenticate the user
             authenticated_user = authenticate(request, username=username, password=password)
-            if authenticated_user is not None:
+            if authenticated_user.is_authenticated:
                 login(request, authenticated_user)
                 return redirect('home')
             else:
@@ -63,7 +63,7 @@ def login_view(request):
 
 
 def confirm_logout_view(request):
-    if request.user is not None:
+    if request.user.is_authenticated:
         logout(request)
         return redirect('home')
     else:
@@ -76,9 +76,11 @@ def add_expenses(request):
         formset = ExpenseEntryFormSet(request.POST)
         if formset.is_valid():
             expense = Expense.objects.create(date=datetime.now())
+            reporter_id = request.user.id
             for form in formset:
                 if form.cleaned_data:
                     ExpenseEntry.objects.create(
+                        reporter_id=reporter_id,
                         expense=expense,
                         category=form.cleaned_data['category'],
                         amount=form.cleaned_data['amount']

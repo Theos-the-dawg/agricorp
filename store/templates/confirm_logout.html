@@ -50,11 +50,11 @@
         <ul>
             <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="{% url 'login' %}">login</a></li>
-            <li><a href="{% url 'logout' %}">Logout</a></li>
+            <li><a href="{% url 'confirm_logout' %}">Logout</a></li>
             <li><a href="{% url 'register' %}">register</a></li>
         </ul>
     </nav>
-    <h1>Are you sure you want to log out? {{ request.user.username }}</h1>
+    <h1>Are you sure you want to log out? {{ request.user }}</h1>
     <form method="POST" action="{% url 'logout' %}">
         {% csrf_token %}
         <a href="{% url 'home' %}">  <button type="submit">Yes, Logout</button></a>

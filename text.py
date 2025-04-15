@@ -1,42 +1,34 @@
-from docx import Document
+# 1.Create a python program that displays the name of a user.
+# 2. Put your code in a while loop to keep it coninuous.
+# 3. Create a function that allows you to add and remove an item in a list. (Do some research on collections) I will give you the solution but try it your own way you must work together as a class to solve this.
+# 4. Lastly your program must have a try catch.
 
-# Load the provided document
-file_path = "/mnt/data/AGREEMENT FEES.docx"
-doc = Document(file_path)
+from datetime import datetime
 
-# Format improvements
-# Define header and footer content
-header_text = "ATTORNEYS, NOTARIES, CONVEYANCERS & ESTATE PLANNERS\n" \
-              "Mbalisto House, 17 Brander Street, Mbombela 1200\n" \
-              "Tel: (013) 752 6936 | Fax: (013) 753 2278 | P.O BOX 894, MBOMBELA, 1200\n" \
-              "E-mail: virginia@nsalaw.co.za, nomaswazi@nsalaw.co.za | VAT 4650260377"
+def function():
+   
+    items = []
+    while True:
+        print("1. Add item")
+        print("2. Remove item")
+        print("3. Exit")
 
-footer_text = "Confidential Legal Document | Prepared by Nomaswazi Shabangu Attorneys"
-
-# Create a new document for better structure
-new_doc = Document()
-
-# Add formatted header
-new_doc.add_paragraph(header_text).alignment = 1  # Center alignment
-
-# Process the content and structure it
-for para in doc.paragraphs:
-    # Skip excessive whitespace and redundant information
-    if para.text.strip():
-        # Add titles and main sections as bold headings
-        if para.text.upper() == para.text:
-            new_doc.add_paragraph(para.text, style="Heading 1")
+        choice = int(input("Enter your choice: "))
+        if choice == 1:
+            item = input("Enter item to add: ")
+            items.append(item)
+            print(items)
+        elif choice == 2:
+            print(items)
+            item = input("Enter item to remove: ")
+            items.remove(item)
+            print(items)
+        elif choice == 3:
+            break
+        elif choice == 4:
+            print(items)
+        
         else:
-            new_doc.add_paragraph(para.text)
-
-# Add footer
-footer_section = new_doc.sections[-1]
-footer = footer_section.footer
-footer.paragraphs[0].text = footer_text
-footer.paragraphs[0].alignment = 1  # Center alignment
-
-# Save the formatted document
-formatted_file_path = "/mnt/data/Formatted_AGREEMENT_FEES.docx"
-new_doc.save(formatted_file_path)
-
-formatted_file_path
+            print("Invalid choice")
+        
+function()

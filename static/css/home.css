@@ -57,8 +57,7 @@ nav ul li a:hover {
 
 /* Hero Section */
 header {
-    background: url('https://via.placeholder.com/1920x500') no-repeat;
-    color: #fff;
+    color: #005f47;
     text-align: center;
     padding: 60px 20px;
 }

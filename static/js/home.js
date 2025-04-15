@@ -5,5 +5,5 @@ console.log(z);
 
 function count(){
     let index=0;
-    
+
 }
