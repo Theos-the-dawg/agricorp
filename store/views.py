@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .forms import CustomUserCreationForm, ExpenseEntryFormSet,LoginForm
 from datetime import datetime
-import pandas as pd
+from  pandas import pandas as pd
 from dateutil.relativedelta import relativedelta
 import pdb
 
