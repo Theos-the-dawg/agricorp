@@ -1,4 +1,5 @@
 from django.contrib.auth.forms import UsernameField
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -63,11 +64,19 @@ def login_view(request):
 
 
 def confirm_logout_view(request):
-    if request.user.is_authenticated:
+     if request.method =='POST' :
         logout(request)
         return redirect('home')
-    else:
-       return redirect('login')    
+
+     else:
+      context = {
+        'username': request.user.username if request.user.is_authenticated else 'Guest',
+        'message': 'Welcome to our website!',
+             }
+      return render(request, 'confirm_logout.html', context)
+
+    
+     
 
 
 @login_required
