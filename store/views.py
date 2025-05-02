@@ -31,7 +31,7 @@ def register(request):
     else:
         registration_form = CustomUserCreationForm()
        
-    return render(request, 'register.html', {' registration_form':  registration_form})
+    return render(request, 'register.html', {'registration_form':  registration_form})
 
 @csrf_exempt
 def login_view(request):
