@@ -1,12 +1,16 @@
 from django.contrib import admin
 from django.urls import path, include
 
-from .views import home_view, insert_json_data, harvest_data
-
+from .views import (home_view,login_view,confirm_logout_view, register,add_expenses,generate_dataframe)
+from django.contrib.auth import views as auth_views
 urlpatterns = [
-  path('home/', home_view,name='home'),
-  path('insert_data/',insert_json_data, name='insert_data'),
-  path('harvest_data/',harvest_data,name='harvest_data')
+  path('', home_view,name='home'),
+  path('login/', login_view, name='login'),
+  path('confirm_logout/', confirm_logout_view, name='confirm_logout'),
+  path('register/', register, name='register'),
+  path('add_expenses/',add_expenses,name='add_expenses'),
+  path('dataframe/', generate_dataframe, name='generate_dataframe'),
+
 
 
 ]
