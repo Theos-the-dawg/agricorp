@@ -1,5 +1,4 @@
 from django.contrib.auth.forms import UsernameField
-from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -11,7 +10,7 @@ from .forms import CustomUserCreationForm, ExpenseEntryFormSet,LoginForm
 from datetime import datetime
 from  pandas import pandas as pd
 from dateutil.relativedelta import relativedelta
-import pdb
+
 
 
 @csrf_exempt

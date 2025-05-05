@@ -31,4 +31,17 @@ def function():
         else:
             print("Invalid choice")
         
-function()
+#function()
+def calculate_triangle():
+    #area
+    print("perpendicular height")
+    half_per_base = float(input()) / 2
+    print("insert base")
+    base = float(input())
+    print("insert height")
+    height = float(input())
+    formula = half_per_base * base* height
+
+    print(f'the area of the triangle is :{formula}')
+
+calculate_triangle()   
