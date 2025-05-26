@@ -4,4 +4,4 @@
 
 /.vs
 /.vscode
-./corpenv
+corpenv/
