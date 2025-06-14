@@ -1,0 +1,25 @@
+{
+
+    "builds": [{
+
+        "src": "happy_grad_fin/wsgi.py",
+
+        "use": "@vercel/python",
+
+        "config": { "maxLambdaSize": "15mb", "runtime": "python3.11" }
+
+    }],
+
+    "routes": [
+
+        {
+
+            "src": "/(.*)",
+
+            "dest": "happy_grad_fin/wsgi.py"
+
+        }
+
+    ]
+
+}
