@@ -2,7 +2,7 @@
 
     "builds": [{
 
-        "src": "happy_grad_fin/wsgi.py",
+        "src": "agricorp/wsgi.py",
 
         "use": "@vercel/python",
 
@@ -16,7 +16,7 @@
 
             "src": "/(.*)",
 
-            "dest": "happy_grad_fin/wsgi.py"
+            "dest": "agriccorp/wsgi.py"
 
         }
 
