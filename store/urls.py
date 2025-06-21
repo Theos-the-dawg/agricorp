@@ -5,6 +5,8 @@ from .views import (home_view,login_view,confirm_logout_view,
                      register,add_expenses,generate_dataframe,
                      product_list,product_detail,place_order)
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
   path('', home_view,name='home'),
   path('login/', login_view, name='login'),
@@ -19,3 +21,6 @@ urlpatterns = [
 
 
 ]
+
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
