@@ -1,16 +1,16 @@
 from django.contrib.auth.forms import UsernameField
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
-from .models import ExpenseEntry,Expense
+from .models import ExpenseEntry,Expense, Category, Product, Order
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .forms import CustomUserCreationForm, ExpenseEntryFormSet,LoginForm
 from datetime import datetime
 from  pandas import pandas as pd
-from dateutil.relativedelta import relativedelta
-
+from dateutil.relativedelta import relativedelta 
+from django.utils import timezone
 
 
 @csrf_exempt
@@ -150,4 +150,29 @@ def generate_dataframe(request):
                                               'weekly_df':weekly_df_html,
                                               'monthly_df':monthly_df_html,
                                               'yearly_df':yearly_df_html})
-    
+
+
+# List all categories
+def category_list(request):
+    categories = Category.objects.all()
+    return render(request, 'category_list.html', {'categories': categories})
+
+# List products in a category
+def product_list(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    products = Product.objects.filter(category=category)
+    return render(request, 'product_list.html', {'category': category, 'products': products})
+
+# Product detail
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    return render(request, 'product_detail.html', {'product': product})
+
+# Place order
+def place_order(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == 'POST':
+        quantity = int(request.POST.get('quantity', 1))
+        Order.objects.create(product=product, quantity=quantity, ordered=True, order_date=timezone.now())
+        return redirect('category_list')
+    return render(request, 'place_order.html', {'product': product})

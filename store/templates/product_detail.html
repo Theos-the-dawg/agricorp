@@ -1,0 +1,6 @@
+<h1>{{ product.name }}</h1>
+<img src="{{ product.image.url }}" alt="{{ product.name }}" width="200">
+<p>{{ product.description }}</p>
+<p>Price: R{{ product.price }}</p>
+<a href="{% url 'place_order' product.id %}">Place Order</a><br>
+<a href="{% url 'product_list' product.category.id %}">Back to Products</a>
