@@ -4,4 +4,9 @@
 
 /.vs
 /.vscode
-corpenv/
+staticfiles/
+# Ignore virtual environment folders
+.venv/
+venv/
+# Ignore Python bytecode files
+*.pyc   

@@ -13,11 +13,11 @@ djangorestframework-simplejwt==5.3.1
 docx==0.2.4
 executing==2.0.1
 gunicorn==22.0.0
-ipython==8.25.0
+ipython==8.18.1
 jedi==0.19.1
 lxml==5.2.2
 matplotlib-inline==0.1.7
-numpy==2.2.3
+numpy==2.0.2
 packaging==24.1
 pandas==2.2.3
 parso==0.8.4
