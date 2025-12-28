@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  {% load static %}
+<h1>Products in {{ category.name }}</h1>
+<ul>
+  {% for product in products %}
+    <li>
+      <a href="{% url 'product_detail' product.id %}">
+        {{ product.name }}
+      </a>
+    </li>
+  {% endfor %}
+</ul>
+<a href="{% url 'category_list' %}">Back to Categories</a>
+
+</body>
+</html>

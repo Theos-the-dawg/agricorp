@@ -5,7 +5,11 @@
 1.Ensure you have pip installed for python.
 
 Windows:
+### To run the Django app, follow these steps:
 
+    1. Open your terminal/command prompt.
+    2. Navigate to the project directory.
+    3. Run the command: python manage.py runserver
 
 Linux:
 
@@ -13,9 +17,7 @@ Linux:
 
     1. Open your terminal/command prompt.
     2. Navigate to the project directory.
-    3. Run the command: python manage.py runserver
-
-## Creating a Superuser
+    3. Run the command: python3 manage.py runserver
 
 ### To create a superuser, follow these steps:
 

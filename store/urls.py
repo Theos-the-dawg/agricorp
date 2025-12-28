@@ -3,7 +3,7 @@ from django.urls import path, include
 
 from .views import (home_view,login_view,confirm_logout_view,
                      register,add_expenses,generate_dataframe,
-                     category_list,product_list,product_detail,place_order)
+                     category_list,product_list,product_detail,list_all_products,place_order)
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -16,8 +16,10 @@ urlpatterns = [
   path('dataframe/', generate_dataframe, name='generate_dataframe'),
   path('categories/', category_list, name='category_list'),
   path('products/<int:category_id>/', product_list, name='product_list'),
+  path('products/', list_all_products, name='products_list'),
   path('product/<int:product_id>/', product_detail, name='product_detail'),
   path('order/<int:product_id>/', place_order, name='place_order'),
+
 
 
 

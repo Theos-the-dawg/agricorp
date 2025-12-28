@@ -24,7 +24,8 @@
             <li><a href="{% url 'register' %}">Register</a></li>
             <li><a href="{% url 'generate_dataframe' %}">Dataframe</a></li>
             <li><a href="{% url 'add_expenses' %}">Add Expenses</a></li>
-               <li><a href="{% url 'category_list' %}">Categories</a></li>
+            <li><a href="{% url 'category_list' %}">Categories</a></li>
+            <li><a href="{% url 'products_list' %}">Products</a></li>
         </ul>
     </nav>
 
@@ -40,6 +41,7 @@
     <main>
         <!-- User Greeting -->
         <section class="greeting">
+            
             <h2>Hello, {{ request.user.username }}!</h2>
         </section>
 

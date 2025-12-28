@@ -21,18 +21,15 @@ def home_view(request):
 def register(request):
     if request.method == 'POST':
         registration_form = CustomUserCreationForm(request.POST)
-       
-        if  registration_form.is_valid():
-            user =  registration_form.save()
-           
-            login(request, user)  
-           
-            return redirect('home') 
+        if registration_form.is_valid():
+            user = registration_form.save()
+            login(request, user)
+            return redirect('home')
     else:
         registration_form = CustomUserCreationForm()
        
     return render(request, 'register.html', {'registration_form':  registration_form})
-
+#login handled by django session automatically 
 @csrf_exempt
 def login_view(request):
     if request.method == 'POST':
@@ -61,7 +58,7 @@ def login_view(request):
 
     return render(request, 'login.html', {'login_form': login_form})
 
-
+#
 def confirm_logout_view(request):
      if request.method =='POST' :
         logout(request)
@@ -156,6 +153,9 @@ def generate_dataframe(request):
 def category_list(request):
     categories = Category.objects.all()
     return render(request, 'category_list.html', {'categories': categories})
+def list_all_products(request):
+    products = Product.objects.all()
+    return render(request, 'products_list.html', {'products': products})
 
 # List products in a category
 def product_list(request, category_id):
@@ -176,3 +176,10 @@ def place_order(request, product_id):
         Order.objects.create(product=product, quantity=quantity, ordered=True, order_date=timezone.now())
         return redirect('category_list')
     return render(request, 'place_order.html', {'product': product})
+
+def cart_logic(request):
+    if request.user.is_authenticated:
+        orders = Order.objects.filter(ordered=False)
+        return render(request, 'cart.html', {'orders': orders})
+    else:
+      return redirect('login')
