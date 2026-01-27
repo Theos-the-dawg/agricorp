@@ -71,9 +71,6 @@ def confirm_logout_view(request):
              }
       return render(request, 'confirm_logout.html', context)
 
-    
-     
-
 
 @login_required
 def add_expenses(request):
@@ -135,7 +132,6 @@ def generate_dataframe(request):
     print(yearly_df)
     
 
-
     # Convert DataFrame to HTML
     daily_df = todays_expense_df.to_html(classes="table table-striped", index=False)  # Use Bootstrap table classes for styling
     weekly_df_html = weekly_df.to_html(classes="table table-striped", index=False)
@@ -147,7 +143,6 @@ def generate_dataframe(request):
                                               'weekly_df':weekly_df_html,
                                               'monthly_df':monthly_df_html,
                                               'yearly_df':yearly_df_html})
-
 
 # List all categories
 def category_list(request):
@@ -183,3 +178,8 @@ def cart_logic(request):
         return render(request, 'cart.html', {'orders': orders})
     else:
       return redirect('login')
+
+def order_history(request):
+    if request.user.is_authenticated:
+        orders = Order.objects.filter(ordered=True).order_by('-order_date')
+        return render(request, 'order_history.html', {'orders': orders})
