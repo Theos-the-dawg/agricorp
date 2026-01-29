@@ -29,7 +29,8 @@ def register(request):
         registration_form = CustomUserCreationForm()
        
     return render(request, 'register.html', {'registration_form':  registration_form})
-#login handled by django session automatically 
+
+#session is controlled by django automatically
 @csrf_exempt
 def login_view(request):
     if request.method == 'POST':

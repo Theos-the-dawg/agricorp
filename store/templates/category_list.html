@@ -1,5 +1,23 @@
 {% load static %}
 <h1>Categories</h1>
+
+ <nav>
+        <ul>
+           
+       
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+          
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'confirm_logout' %}">Logout</a></li>
+            {% endif %}
+            <li><a href="{% url 'register' %}">Register</a></li>
+            <li><a href="{% url 'generate_dataframe' %}">Dataframe</a></li>
+            <li><a href="{% url 'add_expenses' %}">Add Expenses</a></li>
+            <li><a href="{% url 'category_list' %}">Categories</a></li>
+            <li><a href="{% url 'products_list' %}">Products</a></li>
+        </ul>
+    </nav>
 <ul>
   {% for category in categories %}
     <li><a href="{% url 'product_list' category.id %}">{{ category.name }}</a></li>
