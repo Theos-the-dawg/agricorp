@@ -79,3 +79,7 @@ class Order(models.Model):
     quantity = models.IntegerField()
     order_date = models.DateTimeField(auto_now_add=True)
     ordered = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.product.name}:{self.order_date}"
+ 

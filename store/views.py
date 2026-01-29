@@ -148,6 +148,7 @@ def generate_dataframe(request):
 def category_list(request):
     categories = Category.objects.all()
     return render(request, 'category_list.html', {'categories': categories})
+
 def list_all_products(request):
     products = Product.objects.all()
     return render(request, 'products_list.html', {'products': products})
@@ -183,3 +184,4 @@ def order_history(request):
     if request.user.is_authenticated:
         orders = Order.objects.filter(ordered=True).order_by('-order_date')
         return render(request, 'order_history.html', {'orders': orders})
+         
