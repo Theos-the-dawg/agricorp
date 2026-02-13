@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from .forms import CustomUserCreationForm, ExpenseEntryFormSet,LoginForm
 from datetime import datetime
 from  pandas import pandas as pd
+import matplotlib
 from dateutil.relativedelta import relativedelta 
 from django.utils import timezone
 
@@ -132,6 +133,7 @@ def generate_dataframe(request):
     yearly_df = pd.DataFrame(list(year_expense))
     print(yearly_df)
     
+   
 
     # Convert DataFrame to HTML
     daily_df = todays_expense_df.to_html(classes="table table-striped", index=False)  # Use Bootstrap table classes for styling
@@ -144,6 +146,16 @@ def generate_dataframe(request):
                                               'weekly_df':weekly_df_html,
                                               'monthly_df':monthly_df_html,
                                               'yearly_df':yearly_df_html})
+def make_chart(request):
+    if request.method == 'GET' and request.user.is_authenticated:
+        user_expenses = ExpenseEntry.objects.filter(reporter_id=request.user.id)
+        user_expenses_df = pd.DataFrame(list(user_expenses
+                                             .values('id', 'expense', 'expense_id',
+                                                      'category', 'amount', 'expense__date')))
+        
+    user_expenses_df.plot(x='Category', y='Values', kind='bar')
+    return user_expenses
+    
 
 # List all categories
 def category_list(request):
@@ -185,4 +197,4 @@ def order_history(request):
     if request.user.is_authenticated:
         orders = Order.objects.filter(ordered=True).order_by('-order_date')
         return render(request, 'order_history.html', {'orders': orders})
-         
+

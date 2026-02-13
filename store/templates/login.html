@@ -10,18 +10,23 @@
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
 </head>
 <body>
-    <nav>
-        <ul>
+   <nav>
+        <ul>  
             <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'login' %}">login</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+          
+            {% if user.is_authenticated %}
             <li><a href="{% url 'confirm_logout' %}">Logout</a></li>
-            {% comment %} <li><a href="{% url 'logout' %}">Logout</a></li> {% endcomment %}
-            <li><a href="{% url 'register' %}">register</a></li>
-            <li><a href="{% url 'generate_dataframe' %}">dataframe</a></li>
-            <li><a href="{% url 'add_expenses' %}">add_expenses</a></li>
+            {% endif %}
+            <li><a href="{% url 'register' %}">Register</a></li>
+            <li><a href="{% url 'generate_dataframe' %}">Dataframe</a></li>
+            <li><a href="{% url 'add_expenses' %}">Add Expenses</a></li>
+            <li><a href="{% url 'category_list' %}">Categories</a></li>
+            <li><a href="{% url 'products_list' %}">Products</a></li>
         </ul>
     </nav>
-    <h2>Login</h2>
+    <div>
+    <h1>Login</h1>
     <form method="POST">
         {% csrf_token %}
       
@@ -33,6 +38,7 @@
         
         <button type="submit">Login</button>
     </form>
+</div>
 
     {% if messages %}
         <ul>

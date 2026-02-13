@@ -3,7 +3,8 @@ from django.urls import path, include
 
 from .views import (home_view,login_view,confirm_logout_view,
                      register,add_expenses,generate_dataframe,
-                     category_list,product_list,product_detail,list_all_products,place_order)
+                     category_list,product_list,product_detail,
+                     list_all_products,place_order,make_chart)
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
