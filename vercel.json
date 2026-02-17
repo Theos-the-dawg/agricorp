@@ -16,7 +16,7 @@
 
             "src": "/(.*)",
 
-            "dest": "agriccorp/wsgi.py"
+            "dest": "agricorp/wsgi.py"
 
         }
 
