@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Agriculture Portal</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'confirm_logout' %}">Logout</a></li>
+            {% endif %}
+            <li><a href="{% url 'register' %}">Register</a></li>
+            <li><a href="{% url 'generate_dataframe' %}">Dataframe</a></li>
+            <li><a href="{% url 'add_expenses' %}">Add Expenses</a></li>
+            <li><a href="{% url 'category_list' %}">Categories</a></li>
+            <li><a href="{% url 'products_list' %}">Products</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <div class="hero">
+            <h1>Products in {{ category.name }}</h1>
+            <p>Browse and manage products in this category.</p>
+        </div>
+    </header>
+
+    <main style="padding:30px 20px;">
+        <section style="max-width:1000px;margin:0 auto;">
+            {% if products %}
+                <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:20px;margin-bottom:30px;">
+                    {% for product in products %}
+                        <div style="background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);overflow:hidden;transition:transform .2s ease;">
+                            <div style="padding:20px;">
+                                <h3 style="color:#007B5E;margin:0 0 8px 0;">{{ product.name }}</h3>
+                                <p style="color:#666;font-size:14px;margin:0 0 12px 0;">{{ product.description|truncatewords:20 }}</p>
+                                <a href="{% url 'product_detail' product.id %}" style="display:inline-block;background:#007B5E;color:#fff;padding:8px 16px;border-radius:6px;text-decoration:none;font-weight:bold;font-size:14px;">View Details</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p style="text-align:center;color:#666;padding:20px;">No products found in this category.</p>
+            {% endif %}
+            <div style="text-align:center;margin-top:30px;">
+                <a href="{% url 'category_list' %}" style="display:inline-block;background:#f4f4f4;color:#333;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:bold;">Back to Categories</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Agriculture Portal. All rights reserved.</p>
+    </footer>
+</body>
+</html>

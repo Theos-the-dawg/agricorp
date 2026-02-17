@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Order - Agriculture Portal</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'confirm_logout' %}">Logout</a></li>
+            {% endif %}
+            <li><a href="{% url 'register' %}">Register</a></li>
+            <li><a href="{% url 'generate_dataframe' %}">Dataframe</a></li>
+            <li><a href="{% url 'add_expenses' %}">Add Expenses</a></li>
+            <li><a href="{% url 'category_list' %}">Categories</a></li>
+            <li><a href="{% url 'products_list' %}">Products</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <div class="hero">
+            <h1>Confirm Order</h1>
+            <p>{{ product.name }}</p>
+        </div>
+    </header>
+
+    <main style="padding:30px 20px;">
+        <section style="max-width:500px;margin:0 auto;background:#fff;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.08);padding:30px;">
+            <h2 style="text-align:center;color:#007B5E;margin-top:0;">Order Details</h2>
+            <div style="margin:20px 0;">
+                <p style="color:#666;margin:8px 0;"><strong>Product:</strong> {{ product.name }}</p>
+                <p style="color:#666;margin:8px 0;"><strong>Price:</strong> R{{ product.price }} per unit</p>
+                <p style="color:#666;margin:8px 0;"><strong>Description:</strong> {{ product.description }}</p>
+            </div>
+            <form method="post" style="margin-top:24px;">
+                {% csrf_token %}
+                <label style="display:block;margin-bottom:8px;color:#333;font-weight:600;">Quantity:</label>
+                <input type="number" name="quantity" value="1" min="1" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;box-sizing:border-box;margin-bottom:12px;">
+                <div style="display:flex;gap:12px;">
+                    <button type="submit" style="flex:1;background:#007B5E;color:#fff;padding:12px;border-radius:6px;border:none;font-weight:bold;cursor:pointer;font-size:16px;">Confirm Order</button>
+                    <a href="{% url 'product_detail' product.id %}" style="flex:1;background:#f4f4f4;color:#333;padding:12px;border-radius:6px;text-decoration:none;font-weight:bold;text-align:center;">Cancel</a>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Agriculture Portal. All rights reserved.</p>
+    </footer>
+</body>
+</html>

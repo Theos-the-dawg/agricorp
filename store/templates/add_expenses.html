@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Expenses</title>
+    <title>Add Expenses - Agriculture Portal</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <style>
+        .panel{max-width:900px;margin:24px auto;background:#fff;padding:20px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+        .expense-form{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+        .expense-form label{flex:1}
+        .expense-form button{background:#b00020;color:#fff;border:none;padding:8px 10px;border-radius:6px;cursor:pointer}
+        .controls{display:flex;gap:12px;margin-top:12px}
+        .btn-primary{background:#007B5E;color:#fff;padding:10px 16px;border-radius:6px;border:none}
+    </style>
     <script>
         function addForm() {
-            // Get the formset container where the forms are added
             const formContainer = document.getElementById('form-container');
             const totalForms = document.getElementById('id_form-TOTAL_FORMS');
             const currentFormCount = formContainer.getElementsByClassName('expense-form').length;
-            
-            // Clone the first form and reset its values
-            const newForm = document.getElementsByClassName('expense-form')[0].cloneNode(true);
-            const regex = new RegExp(`form-0`, 'g');
-            newForm.innerHTML = newForm.innerHTML.replace(regex, `form-${currentFormCount}`);
-            
-            // Reset the input values
-            const inputs = newForm.getElementsByTagName('input');
-            for (let i = 0; i < inputs.length; i++) {
-                inputs[i].value = '';
-            }
-            
+            const proto = document.querySelector('.expense-form');
+            if(!proto) return;
+            const newForm = proto.cloneNode(true);
+            // update names and ids
+            newForm.querySelectorAll('input, select, textarea').forEach(function(inp){
+                if(inp.name) inp.name = inp.name.replace(/form-\d+-/, `form-${currentFormCount}-`);
+                if(inp.id) inp.id = inp.id.replace(/form-\d+-/, `form-${currentFormCount}-`);
+                inp.value = '';
+            });
             formContainer.appendChild(newForm);
-            
-            // Increment the total forms count
             totalForms.value = parseInt(totalForms.value) + 1;
         }
 
         function removeForm(button) {
             const formContainer = document.getElementById('form-container');
             const totalForms = document.getElementById('id_form-TOTAL_FORMS');
-            
             if (formContainer.getElementsByClassName('expense-form').length > 1) {
                 button.closest('.expense-form').remove();
                 totalForms.value = parseInt(totalForms.value) - 1;
@@ -43,30 +46,50 @@
     <nav>
         <ul>
             <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'login' %}">login</a></li>
-            <li><a href="{% url 'confirm_logout' %}">Logout</a></li>
-            <li><a href="{% url 'register' %}">register</a></li>
-            <li><a href="{% url 'generate_dataframe' %}">dataframe</a></li>
-            <li><a href="{% url 'add_expenses' %}">add_expenses</a></li>
+            <li><a href=\"{% url 'login' %}\">Login</a></li>
+            {% if user.is_authenticated %}
+            <li><a href=\"{% url 'confirm_logout' %}\">Logout</a></li>
+            {% endif %}
+            <li><a href=\"{% url 'register' %}\">Register</a></li>
+            <li><a href=\"{% url 'generate_dataframe' %}\">Dataframe</a></li>
+            <li><a href=\"{% url 'add_expenses' %}\">Add Expenses</a></li>
+            <li><a href=\"{% url 'category_list' %}\">Categories</a></li>
+            <li><a href=\"{% url 'products_list' %}\">Products</a></li>
         </ul>
     </nav>
-    <h1>Add Expenses</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ formset.management_form }}
-        
-        <div id="form-container">
-            {% for form in formset %}
-                <div class="expense-form">
-                    <label>Category: {{ form.category }}</label>
-                    <label>Amount: {{ form.amount }}</label>
-                    <button type="button" onclick="removeForm(this)">Remove</button>
-                </div>
-            {% endfor %}
+
+    <header>
+        <div class="hero">
+            <h1>Add Expenses</h1>
+            <p>Record your expenses quickly. Add multiple entries before submitting.</p>
         </div>
-        
-        <button type="button" onclick="addForm()">Add More</button>
-        <button type="submit">Submit</button>
-    </form>
+    </header>
+
+    <main>
+        <section class="panel">
+            <form method="post">
+                {% csrf_token %}
+                {{ formset.management_form }}
+                <div id="form-container">
+                    {% for form in formset %}
+                        <div class="expense-form">
+                            <label>Category: {{ form.category }}</label>
+                            <label>Amount: {{ form.amount }}</label>
+                            <button type="button" onclick="removeForm(this)">Remove</button>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="controls">
+                    <button type="button" class="btn-primary" onclick="addForm()">Add More</button>
+                    <button type="submit" class="btn-primary">Submit</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Agriculture Portal. All rights reserved.</p>
+    </footer>
 </body>
 </html>

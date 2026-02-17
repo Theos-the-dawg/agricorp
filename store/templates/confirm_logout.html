@@ -6,6 +6,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirm Logout</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <style>
+        .logout-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);opacity:0;pointer-events:none;transition:opacity .3s}
+        .logout-overlay.visible{opacity:1;pointer-events:auto}
+        .logout-overlay .sad-face{width:120px;height:120px;border-radius:50%;background:#fff;display:inline-block;position:relative;box-shadow:0 6px 18px rgba(0,0,0,0.15);}
+        .sad-face .eye{width:14px;height:14px;border-radius:50%;background:#333;position:absolute;top:36px}
+        .sad-face .eye.left{left:34px;transform-origin:center}
+        .sad-face .eye.right{right:34px}
+        .sad-face .mouth{position:absolute;left:50%;bottom:28px;width:60px;height:34px;margin-left:-30px;border-bottom:6px solid #b00020;border-radius:0 0 60px 60px;transform:scaleY(0);transform-origin:bottom center;transition:transform .5s ease}
+        .logout-overlay.visible .sad-face .mouth{transform:scaleY(1)}
+        .logout-overlay p{color:#fff;margin-top:12px;font-size:1.1rem}
+    </style>
+    <script>
+        // show sad-face animation then submit
+        function handleLogoutSubmit(e){
+            e.preventDefault();
+            const overlay = document.getElementById('logoutOverlay');
+            overlay.classList.add('visible');
+            // wait for animation then submit
+            setTimeout(()=>{
+                e.target.submit();
+            }, 900);
+        }
+        document.addEventListener('DOMContentLoaded', ()=>{
+            const form = document.getElementById('logoutForm');
+            if(form) form.addEventListener('submit', handleLogoutSubmit);
+        });
+    </script>
 </head>
 <body>
     <nav>
@@ -16,14 +45,27 @@
             <li><a href="{% url 'register' %}">register</a></li>
         </ul>
     </nav>
-    <h1>Are you sure you want to log out? {{ request.user }}</h1>
+    <main style="padding:30px;">
+        <section style="max-width:720px;margin:0 auto;text-align:center;">
+            <h1>Are you sure you want to log out?</h1>
+            <p class="muted">You're logged in as <strong>{{ request.user }}</strong></p>
 
-    <form method="POST" action="{% url 'confirm_logout' %}">
-        {% csrf_token %}
-        <a href="{% url 'home' %}"> 
-        <button type="submit">Yes, Logout</button></a>
-       
-    </form>
-    <a href="{% url 'home' %}">Cancel</a>
+            <form id="logoutForm" method="POST" action="{% url 'confirm_logout' %}" style="display:inline-block;margin-top:20px;">
+                {% csrf_token %}
+                <button type="submit" class="btn" style="background:#b00020;padding:10px 18px;border-radius:6px;color:#fff;border:none;margin-right:12px;">Yes, Logout</button>
+                <a href="{% url 'home' %}" class="btn" style="background:#007B5E;padding:10px 18px;border-radius:6px;color:#fff;border:none;">Cancel</a>
+            </form>
+        </section>
+    </main>
+
+    <!-- logout animation overlay -->
+    <div id="logoutOverlay" class="logout-overlay" aria-hidden="true">
+        <div class="sad-face">
+            <div class="eye left"></div>
+            <div class="eye right"></div>
+            <div class="mouth"></div>
+        </div>
+        <p>Goodbye!</p>
+    </div>
 </body>
 </html>

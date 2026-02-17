@@ -1,27 +1,44 @@
-<!-- dataframe.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% load static%}
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DataFrame Table</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>Data Analysis - Agriculture Portal</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+        .dataframe-section {
+            background: #fff;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        h1 {
-            text-align: center;
+        .dataframe-section h2 {
+            color: #007B5E;
+            border-bottom: 3px solid #007B5E;
+            padding-bottom: 12px;
+            margin-top: 0;
         }
-        table {
-            margin: 20px auto;
-            width: 80%;
+        .dataframe-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
         }
-        th, td {
+        .dataframe-section table th {
+            background: #007B5E;
+            color: #fff;
             padding: 12px;
             text-align: left;
+            font-weight: bold;
+        }
+        .dataframe-section table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .dataframe-section table tr:hover {
+            background: #f9f9f9;
         }
     </style>
 </head>
@@ -29,28 +46,55 @@
     <nav>
         <ul>
             <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'login' %}">login</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            {% if user.is_authenticated %}
             <li><a href="{% url 'confirm_logout' %}">Logout</a></li>
-            <li><a href="{% url 'register' %}">register</a></li>
-            <li><a href="{% url 'generate_dataframe' %}">dataframe</a></li>
-            <li><a href="{% url 'add_expenses' %}">add_expenses</a></li>
+            {% endif %}
+            <li><a href="{% url 'register' %}">Register</a></li>
+            <li><a href="{% url 'generate_dataframe' %}">Dataframe</a></li>
+            <li><a href="{% url 'add_expenses' %}">Add Expenses</a></li>
+            <li><a href="{% url 'category_list' %}">Categories</a></li>
+            <li><a href="{% url 'products_list' %}">Products</a></li>
         </ul>
     </nav>
-    <h1>DataFrame Table for daily</h1>
-    <div class="container">
-        {{ daily_df|safe }}  <!-- Display the DataFrame HTML -->
-    </div>
-    <h1>DataFrame Table for weekly</h1>
-    <div class="container">
-        {{ weekly_df|safe }}  <!-- Display the DataFrame HTML -->
-    </div>
-    <h1>DataFrame Table for monthly</h1>
-    <div class="container">
-        {{ monthly_df|safe }}  <!-- Display the DataFrame HTML -->
-    </div>
-    <h1>DataFrame Table for yearly</h1>
-    <div class="container">
-        {{ yearly_df|safe }}  <!-- Display the DataFrame HTML -->
-    </div>
+
+    <header>
+        <div class="hero">
+            <h1>Data Analysis Dashboard</h1>
+            <p>View your agricultural data analyzed by time period.</p>
+        </div>
+    </header>
+
+    <main style="padding:30px 20px;">
+        <section style="max-width:1200px;margin:0 auto;">
+            <div class="dataframe-section">
+                <h2>Daily Analysis</h2>
+                {{ daily_df|safe }}
+            </div>
+
+            <div class="dataframe-section">
+                <h2>Weekly Analysis</h2>
+                {{ weekly_df|safe }}
+            </div>
+
+            <div class="dataframe-section">
+                <h2>Monthly Analysis</h2>
+                {{ monthly_df|safe }}
+            </div>
+
+            <div class="dataframe-section">
+                <h2>Yearly Analysis</h2>
+                {{ yearly_df|safe }}
+            </div>
+
+            <div style="text-align:center;margin-top:30px;">
+                <a href="{% url 'home' %}" style="display:inline-block;background:#007B5E;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:bold;">Back to Home</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Agriculture Portal. All rights reserved.</p>
+    </footer>
 </body>
 </html>

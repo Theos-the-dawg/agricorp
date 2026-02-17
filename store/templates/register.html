@@ -1,29 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Register - Agriculture Portal</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <script src="{% static 'js/home.js' %}"></script>
+    <style>
+        /* Animated gradient hero */
+        header.animated-header {
+            background: linear-gradient(-45deg, #005f47, #007B5E, #009b7d, #005f47);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        header.animated-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s linear infinite;
+        }
+        header.animated-header .hero {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        header.animated-header .hero h1 {
+            color: #fff;
+            font-size: 3rem;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        header.animated-header .hero p {
+            color: rgba(255,255,255,0.95);
+            font-size: 1.3rem;
+            margin: 0;
+            font-weight: 300;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+    </style>
+    <script>
+        function togglePassword(fieldId) {
+            const pwd = document.getElementById(fieldId);
+            pwd.type = pwd.type === 'password' ? 'text' : 'password';
+            const btn = event.target;
+            btn.textContent = pwd.type === 'password' ? 'Show' : 'Hide';
+        }
+
+        function validateForm(e){
+            const form = e.target;
+            const fields = form.querySelectorAll('input[required], textarea[required]');
+            const err = document.getElementById('registerError');
+            err.textContent = '';
+            
+            let valid = true;
+            fields.forEach(f => {
+                if(!f.value.trim()){
+                    valid = false;
+                }
+            });
+            
+            if(!valid){
+                e.preventDefault();
+                err.textContent = 'Please fill all required fields.';
+                return false;
+            }
+            
+            const btn = form.querySelector('button[type=submit]');
+            btn.disabled = true;
+            btn.textContent = 'Registering...';
+            return true;
+        }
+        
+        document.addEventListener('DOMContentLoaded', ()=>{
+            const form = document.getElementById('registerForm');
+            if(form) form.addEventListener('submit', validateForm);
+        });
+    </script>
 </head>
 <body>
-    <nav></nav>
+    <nav>
         <ul>
             <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'login' %}">login</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            {% if user.is_authenticated %}
             <li><a href="{% url 'confirm_logout' %}">Logout</a></li>
-            <li><a href="{% url 'register' %}">register</a></li>
-            <li><a href="{% url 'generate_dataframe' %}">dataframe</a></li>
-            <li><a href="{% url 'add_expenses' %}">add_expenses</a></li>
+            {% endif %}
+            <li><a href="{% url 'register' %}">Register</a></li>
+            <li><a href="{% url 'generate_dataframe' %}">Dataframe</a></li>
+            <li><a href="{% url 'add_expenses' %}">Add Expenses</a></li>
+            <li><a href="{% url 'category_list' %}">Categories</a></li>
+            <li><a href="{% url 'products_list' %}">Products</a></li>
         </ul>
     </nav>
-    <h2>Register</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ registration_form.as_p }}
-        
-        <button type="submit">Register</button>
-    </form>
+
+    <header class="animated-header">
+        <div class="hero">
+            <h1>Create Your Account</h1>
+            <p>Join us and start managing your agricultural operations.</p>
+        </div>
+    </header>
+
+    <main>
+        <section style="max-width:500px;margin:30px auto;background:#fff;padding:24px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.08);">
+            <h2 style="text-align:center;color:#007B5E;margin-bottom:20px;">Register</h2>
+            <form id="registerForm" method="POST" novalidate>
+                {% csrf_token %}
+                {% if registration_form.errors %}
+                    <div style="color:#b00020;background:#ffebee;padding:10px;border-radius:6px;margin-bottom:12px;">
+                        {% for field, errors in registration_form.errors.items %}
+                            {% for error in errors %}<p style="margin:4px 0;">{{ error }}</p>{% endfor %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                {% for field in registration_form %}
+                    {% if field.field.widget.input_type != 'hidden' %}
+                        <label for="{{ field.id_for_label }}" style="display:block;margin:10px 0 6px;color:#333;font-weight:600;">{{ field.label }}</label>
+                        {% if field.field.widget.input_type == 'password' %}
+                            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+                                {{ field }}
+                                <button type="button" onclick="togglePassword('{{ field.id_for_label }}')" style="padding:6px 10px;border-radius:4px;background:#f4f4f4;border:1px solid #ddd;cursor:pointer;font-size:12px;white-space:nowrap;">Show</button>
+                            </div>
+                        {% elif field.field.widget.widget_type == 'textarea' %}
+                            {{ field }}
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                
+                <div id="registerError" style="color:#b00020;margin:12px 0;font-weight:bold;"></div>
+
+                <button type="submit" style="width:100%;padding:12px;border-radius:6px;background:#007B5E;color:#fff;border:none;font-weight:bold;cursor:pointer;font-size:16px;margin-top:12px;">Register</button>
+            </form>
+            <p style="margin-top:12px;color:#666;text-align:center;font-size:14px;">Already have an account? <a href="{% url 'login' %}" style="color:#007B5E;font-weight:bold;">Login</a></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Agriculture Portal. All rights reserved.</p>
+    </footer>
 </body>
 </html>
