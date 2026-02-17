@@ -1,7 +1,61 @@
-{% load static %}
-<h1>{{ product.name }}</h1>
-<img src="{{ product.image.url }}" alt="{{ product.name }}" width="200">
-<p>{{ product.description }}</p>
-<p>Price: R{{ product.price }}</p>
-<a href="{% url 'place_order' product.id %}">Place Order</a><br>
-<a href="{% url 'product_list' product.category.id %}">Back to Products</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} - Agriculture Portal</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'confirm_logout' %}">Logout</a></li>
+            {% endif %}
+            <li><a href="{% url 'register' %}">Register</a></li>
+            <li><a href="{% url 'generate_dataframe' %}">Dataframe</a></li>
+            <li><a href="{% url 'add_expenses' %}">Add Expenses</a></li>
+            <li><a href="{% url 'category_list' %}">Categories</a></li>
+            <li><a href="{% url 'products_list' %}">Products</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <div class="hero">
+            <h1>{{ product.name }}</h1>
+            <p>Item from {{ product.category.name }} category</p>
+        </div>
+    </header>
+
+    <main style="padding:30px 20px;">
+        <section style="max-width:800px;margin:0 auto;background:#fff;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.08);overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:0;">
+            <div style="background:#f9f9f9;display:flex;align-items:center;justify-content:center;padding:30px;">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width:100%;height:auto;border-radius:8px;">
+                {% else %}
+                    <div style="width:100%;aspect-ratio:1;background:#e0e0e0;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#999;font-size:14px;">No image available</div>
+                {% endif %}
+            </div>
+            <div style="padding:30px;display:flex;flex-direction:column;justify-content:space-between;">
+                <div>
+                    <p style="color:#666;font-size:14px;margin:0 0 8px 0;">Category: <strong>{{ product.category.name }}</strong></p>
+                    <p style="color:#999;margin:0 0 20px 0;line-height:1.6;">{{ product.description }}</p>
+                    <p style="font-size:28px;color:#007B5E;font-weight:bold;margin:20px 0;">R{{ product.price }}</p>
+                </div>
+                <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                    <a href="{% url 'place_order' product.id %}" style="flex:1;background:#007B5E;color:#fff;padding:12px 20px;border-radius:6px;text-decoration:none;font-weight:bold;text-align:center;">Place Order</a>
+                    <a href="{% url 'product_list' product.category.id %}" style="flex:1;background:#f4f4f4;color:#333;padding:12px 20px;border-radius:6px;text-decoration:none;font-weight:bold;text-align:center;">Back to Products</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Agriculture Portal. All rights reserved.</p>
+    </footer>
+</body>
+</html>

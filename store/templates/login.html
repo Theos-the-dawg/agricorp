@@ -2,19 +2,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login - Agriculture Portal</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <script src="{% static 'js/home.js' %}"></script>
+    <style>
+        /* Animated gradient hero */
+        header.animated-header {
+            background: linear-gradient(-45deg, #007B5E, #005f47, #009b7d, #007B5E);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        header.animated-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s linear infinite;
+        }
+        header.animated-header .hero {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        header.animated-header .hero h1 {
+            color: #fff;
+            font-size: 3rem;
+            margin: 0 0 10px 0;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        header.animated-header .hero p {
+            color: rgba(255,255,255,0.95);
+            font-size: 1.3rem;
+            margin: 0;
+            font-weight: 300;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+    </style>
+    <script>
+        function togglePassword() {
+            const pwd = document.getElementById('password');
+            pwd.type = pwd.type === 'password' ? 'text' : 'password';
+            document.getElementById('togglePwd').textContent = pwd.type === 'password' ? 'Show' : 'Hide';
+        }
+
+        function validateForm(e){
+            const user = document.getElementById('username');
+            const pwd = document.getElementById('password');
+            const err = document.getElementById('loginError');
+            err.textContent = '';
+            if(!user.value.trim() || !pwd.value.trim()){
+                e.preventDefault();
+                err.textContent = 'Please enter both username and password.';
+                return false;
+            }
+            const btn = e.target.querySelector('button[type=submit]');
+            btn.disabled = true;
+            btn.textContent = 'Logging in...';
+            return true;
+        }
+        document.addEventListener('DOMContentLoaded', ()=>{
+            const form = document.getElementById('loginForm');
+            if(form) form.addEventListener('submit', validateForm);
+        });
+    </script>
 </head>
 <body>
-   <nav>
-        <ul>  
+    <nav>
+        <ul>
             <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="{% url 'login' %}">Login</a></li>
-          
             {% if user.is_authenticated %}
             <li><a href="{% url 'confirm_logout' %}">Logout</a></li>
             {% endif %}
@@ -25,27 +106,40 @@
             <li><a href="{% url 'products_list' %}">Products</a></li>
         </ul>
     </nav>
-    <div>
-    <h1>Login</h1>
-    <form method="POST">
-        {% csrf_token %}
-      
-        <label for="username">Username:</label>
-        <input type="text" name="username" required>
-        
-        <label for="password">Password:</label>
-        <input type="password" name="password" required> 
-        
-        <button type="submit">Login</button>
-    </form>
-</div>
 
-    {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    <header class="animated-header">
+        <div class="hero">
+            <h1>Welcome Back</h1>
+            <p>Sign in to manage your agricultural expenses and data.</p>
+        </div>
+    </header>
+
+    <main>
+        <section style="max-width:420px;margin:30px auto;background:#fff;padding:24px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.08);">
+            <h2 style="text-align:center;color:#007B5E;">Login</h2>
+            <form id="loginForm" method="POST" novalidate>
+                {% csrf_token %}
+                <label for="username">Username</label>
+                <input id="username" type="text" name="username" placeholder="Enter username" required>
+
+                <label for="password">Password</label>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+                    <input id="password" type="password" name="password" placeholder="Enter password" required style="flex:1;">
+                    <button type="button" id="togglePwd" onclick="togglePassword()" style="padding:6px 10px;border-radius:4px;background:#f4f4f4;border:1px solid #ddd;cursor:pointer;font-size:12px;">Show</button>
+                </div>
+
+                <label style="display:flex;align-items:center;gap:6px;margin-bottom:12px;"><input type="checkbox" name="remember"> Remember me</label>
+
+                <div id="loginError" style="color:#b00020;margin:8px 0 12px;font-weight:bold;">{% for message in messages %}{{ message }}{% endfor %}</div>
+
+                <button type="submit" style="width:100%;padding:12px;border-radius:6px;background:#007B5E;color:#fff;border:none;font-weight:bold;cursor:pointer;font-size:16px;">Login</button>
+            </form>
+            <p style="margin-top:12px;color:#666;text-align:center;font-size:14px;">Don't have an account? <a href="{% url 'register' %}" style="color:#007B5E;font-weight:bold;">Register</a></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Agriculture Portal. All rights reserved.</p>
+    </footer>
 </body>
 </html>
