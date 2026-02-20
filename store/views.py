@@ -16,15 +16,6 @@ from django.utils import timezone
 import mpld3
 import numpy as np
 
-# Compatibility: older code or third-party libs may reference `numpy.matrix`.
-# NumPy 2.0+ removed the `matrix` class; provide a lightweight fallback that
-# returns a regular ndarray so downstream code doesn't crash expecting
-# `numpy.matrix` to exist. This keeps behaviour simple and safe for charts.
-# if not hasattr(np, 'matrix'):
-#     def _matrix(data, dtype=None, copy=True):
-#         return np.array(data, dtype=dtype, copy=copy)
-#     np.matrix = _matrix
-
 @csrf_exempt
 def home_view(request):
     return render(request, 'home.html')
