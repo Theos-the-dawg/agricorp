@@ -54,7 +54,7 @@ def login_view(request):
         if user is not None:
             # Authenticate the user
             authenticated_user = authenticate(request, username=username, password=password)
-            if authenticated_user.is_authenticated:
+            if  authenticated_user is not None:
                 login(request, authenticated_user)
                 return redirect('home')
             else:
