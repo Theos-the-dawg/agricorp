@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Shopping Cart - AgriCorp{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Shopping Cart</h1>
+    <p>Review and manage your items</p>
+</header>
+
+{% if orders %}
+<div style="overflow-x: auto;">
+    <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <thead>
+            <tr style="background-color: #2c5f2d; color: white;">
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #1a3a1a;">Product</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #1a3a1a;">Price</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #1a3a1a;">Quantity</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #1a3a1a;">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 12px;">{{ order.product.name }}</td>
+                <td style="padding: 12px;">${{ order.product.price }}</td>
+                <td style="padding: 12px;">{{ order.quantity }}</td>
+                <td style="padding: 12px;">${{ order.product.price|mul:order.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div style="margin-top: 20px; text-align: right;">
+    <p style="background: white; padding: 15px; border-radius: 8px;">
+        <strong>Total Items:</strong> 
+        <span style="font-size: 1.3em; color: #2c5f2d;">{{ orders|length }}</span>
+    </p>
+</div>
+
+<div style="margin-top: 20px; text-align: center;">
+    <a href="{% url 'products_list' %}" class="btn">Continue Shopping</a>
+    <a href="{% url 'home' %}" class="btn btn-secondary" style="margin-left: 10px;">Back to Home</a>
+</div>
+
+{% else %}
+<div style="background: white; padding: 40px; border-radius: 8px; text-align: center; margin: 40px 0;">
+    <h3 style="color: #666; margin-bottom: 20px;">Your cart is empty</h3>
+    <p style="color: #999; margin-bottom: 20px;">Start shopping by browsing our products.</p>
+    <a href="{% url 'products_list' %}" class="btn">Browse Products</a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Custom filter for multiplication in templates (if needed)
+</script>
+{% endblock %}

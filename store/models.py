@@ -6,8 +6,8 @@ class Expense(models.Model):
     date = models.DateField()
     description = models.TextField(blank=True, null=True)
 
-    def __str__(self):
-        return f"Expenses for {self.date}"
+    # def __str__(self):
+    #     return f"Expenses for {self.date}"
 
 
 class ExpenseCategory(models.Model):
@@ -57,6 +57,8 @@ class ExpenseEntry(models.Model):
 
     def __str__(self):
         return f"{self.category} - {self.amount}"
+
+    
     
 class Category(models.Model):
     name = models.CharField(max_length=200)

@@ -1,81 +1,59 @@
-<!-- templates/home.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page - Agriculture Portal</title>
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
-    <script src="{% static 'js/home.js' %}"></script>
-</head>
-<body>
-    <!-- Navigation Bar -->
-    <nav>
-        <ul>
-           
-       
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'login' %}">Login</a></li>
-          
-            {% if user.is_authenticated %}
-            <li><a href="{% url 'confirm_logout' %}">Logout</a></li>
-            {% endif %}
-            <li><a href="{% url 'register' %}">Register</a></li>
-            <li><a href="{% url 'generate_dataframe' %}">Dataframe</a></li>
-            <li><a href="{% url 'chart' %}">chart</a></li>
-            <li><a href="{% url 'add_expenses' %}">Add Expenses</a></li>
-            <li><a href="{% url 'category_list' %}">Categories</a></li>
-            <li><a href="{% url 'products_list' %}">Products</a></li>
-        </ul>
-    </nav>
+{% extends 'base.html' %}
 
-    <!-- Hero Section -->
-    <header>
-        <div class="hero">
-            <h1>Welcome to the Agriculture Portal</h1>
-            <p>Your trusted companion for modern farming and resource management.</p>
+{% block title %}Home - Agriculture Portal{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<header>
+    <h1>Welcome to the AgriCorp Portal</h1>
+    <p>Your trusted companion for modern farming and resource management.</p>
+</header>
+
+<!-- User Greeting -->
+<section class="greeting">
+    {% if user.is_authenticated %}
+    <h2>Hello, {{ user.username }}!</h2>
+    <p>Welcome back! Dive into your dashboard to manage your agricultural operations.</p>
+    <a href="{% url 'dashboard' %}" class="btn" style="margin-top: 10px;">Go to Dashboard</a>
+    {% else %}
+    <h2>Welcome to AgriCorp</h2>
+    <p>Start managing your agricultural operations effectively by logging in or creating an account.</p>
+    {% endif %}
+</section>
+
+<!-- Features Section -->
+<section style="margin-top: 30px;">
+    <h2 style="color: #2c5f2d; margin-bottom: 20px;">Our Features</h2>
+    <div class="features-grid">
+        <div class="feature-item">
+            <h3>Expense Tracking</h3>
+            <p>Keep track of your agricultural expenses with ease. Categorize and analyze your spending patterns.</p>
         </div>
-    </header>
+        <div class="feature-item">
+            <h3>Data Analysis</h3>
+            <p>Generate insights and analyze data for better decisions using our built-in reporting tools.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Resource Planning</h3>
+            <p>Optimize the use of resources for maximum efficiency. Manage products and inventory seamlessly.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Order Management</h3>
+            <p>Create and track orders for your products. View order history and status in real-time.</p>
+        </div>
+    </div>
+</section>
 
-    <!-- Main Content -->
-    <main>
-        <!-- User Greeting -->
-        <section class="greeting">
-            
-            <h2>Hello, {{ request.user.username }}!</h2>
-        </section>
-
-        <!-- Features Section -->
-        <section class="features">
-            <h2>Our Features</h2>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <h3>Expense Tracking</h3>
-                    <p>Keep track of your agricultural expenses with ease.</p>
-                </div>
-                <div class="feature-item">
-                    <h3>Data Analysis</h3>
-                    <p>Generate insights and analyze data for better decisions.</p>
-                </div>
-                <div class="feature-item">
-                    <h3>Resource Planning</h3>
-                    <p>Optimize the use of resources for maximum efficiency.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Call to Action -->
-        <section class="cta">
-            <h2>Join Us Today!</h2>
-            <p>Start managing your agricultural operations more effectively.</p>
-            <a href="{% url 'register' %}" class="btn">Get Started</a>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 Agriculture Portal. All rights reserved.</p>
-    </footer>
-</body>
-</html>
+<!-- Call to Action -->
+<div class="cta">
+    <h2>Get Started Today!</h2>
+    <p>Start managing your agricultural operations more effectively.</p>
+    {% if user.is_authenticated %}
+    <a href="{% url 'add_expenses' %}" class="btn">Add Your First Expense</a>
+    <a href="{% url 'products_list' %}" class="btn" style="margin-left: 10px;">Browse Products</a>
+    {% else %}
+    <a href="{% url 'register' %}" class="btn">Create Account</a>
+    <a href="{% url 'login' %}" class="btn" style="margin-left: 10px;">Login Here</a>
+    {% endif %}
+</div>
+{% endblock %}

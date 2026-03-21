@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .forms import CustomUserCreationForm, ExpenseEntryFormSet,LoginForm
 from datetime import datetime
-from pandas import pandas as pd
+import pandas as pd
 import plotly.express as px
 import plotly.offline as py_offline
 import matplotlib.pyplot as plt
@@ -15,10 +15,36 @@ from dateutil.relativedelta import relativedelta
 from django.utils import timezone
 import mpld3
 import numpy as np
+from django.conf import settings
+
 
 @csrf_exempt
 def home_view(request):
     return render(request, 'home.html')
+
+@login_required
+def dashboard_view(request):
+    """Dashboard view showing user's expenses and products"""
+    user = request.user
+    expenses = ExpenseEntry.objects.filter(reporter=user)
+    total_expenses = sum(e.amount for e in expenses)
+    recent_expenses = ExpenseEntry.objects.filter(reporter=user).values(
+        'id', 'category', 'amount', 'expense__date'
+    ).order_by('-expense__date')[:5]
+    
+    products = Product.objects.all()
+    total_products = products.count()
+    orders = Order.objects.all()
+    total_orders = orders.count()
+    
+    context = {
+        'total_expenses': total_expenses,
+        'total_products': total_products,
+        'total_orders': total_orders,
+        'recent_expenses': recent_expenses,
+        'products': products[:5],
+    }
+    return render(request, 'dashboard.html', context)
 
 @csrf_exempt
 def register(request):

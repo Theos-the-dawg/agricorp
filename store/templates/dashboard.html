@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - AgriCorp{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Dashboard</h1>
+    <p>Welcome to your agricultural management center</p>
+</header>
+
+<div class="greeting">
+    <h2>Hello, {{ user.username }}!</h2>
+    <p>Here's your overview for today.</p>
+</div>
+
+<div class="features-grid">
+    <div class="feature-item">
+        <h3>Total Expenses</h3>
+        <p style="font-size: 2em; color: #2c5f2d; font-weight: bold;">${{ total_expenses }}</p>
+        <p>Your cumulative expenses</p>
+    </div>
+    <div class="feature-item">
+        <h3>Total Products</h3>
+        <p style="font-size: 2em; color: #2c5f2d; font-weight: bold;">{{ total_products }}</p>
+        <p>Available products</p>
+    </div>
+    <div class="feature-item">
+        <h3>Total Orders</h3>
+        <p style="font-size: 2em; color: #2c5f2d; font-weight: bold;">{{ total_orders }}</p>
+        <p>Orders placed</p>
+    </div>
+</div>
+
+<section style="margin-top: 30px;">
+    <h2 style="color: #2c5f2d; margin-bottom: 20px;">Recent Expenses</h2>
+    {% if recent_expenses %}
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <thead>
+                <tr style="background-color: #2c5f2d; color: white;">
+                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #1a3a1a;">Category</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #1a3a1a;">Amount</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #1a3a1a;">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in recent_expenses %}
+                <tr style="border-bottom: 1px solid #ddd;">
+                    <td style="padding: 12px;">{{ expense.category }}</td>
+                    <td style="padding: 12px;">${{ expense.amount }}</td>
+                    <td style="padding: 12px;">{{ expense.expense__date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p style="background: white; padding: 20px; border-radius: 8px; text-align: center;">No expenses recorded yet.</p>
+    {% endif %}
+</section>
+
+<section style="margin-top: 30px;">
+    <h2 style="color: #2c5f2d; margin-bottom: 20px;">Featured Products</h2>
+    {% if products %}
+    <div class="features-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <h3>{{ product.name }}</h3>
+            <p style="color: #666; margin-bottom: 10px;">{{ product.description|truncatewords:15 }}</p>
+            <p style="color: #2c5f2d; font-weight: bold; font-size: 1.3em; margin-bottom: 10px;">${{ product.price }}</p>
+            <p style="color: #999; font-size: 0.9em; margin-bottom: 15px;">Category: {{ product.category.name }}</p>
+            <a href="{% url 'product_detail' product.id %}" class="btn btn-secondary">View Details</a>
+        </div>
+        {% endfor %}
+    </div>
+    <p style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'products_list' %}" class="btn">View All Products</a>
+    </p>
+    {% else %}
+    <p style="background: white; padding: 20px; border-radius: 8px; text-align: center;">No products available.</p>
+    {% endif %}
+</section>
+
+<div class="cta">
+    <h2>Manage Your Operations</h2>
+    <p>Explore all our tools to manage expenses, products, and orders.</p>
+    <a href="{% url 'add_expenses' %}" class="btn">Add New Expense</a>
+    <a href="{% url 'products_list' %}" class="btn" style="margin-left: 10px;">Browse Products</a>
+</div>
+{% endblock %}

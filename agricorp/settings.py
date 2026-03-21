@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'store',
     'django_extensions',
-  #  'shell_plus'
 ]
 
 MIDDLEWARE = [
@@ -125,15 +124,18 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 #O.G static dir
 STATIC_URL = 'static/'
 
-#new static dir for hosting
-#STATIC_URL = '/home/motheo/Documents/Projects/happy_grad_fin/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+# Directory where static files are gathered by collectstatic
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
+# URL to use when referring to static files
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# Additional directories where Django will search for static files
+# During development this points to the project's `static/` folder.
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 

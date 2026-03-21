@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Order History - AgriCorp{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Order History</h1>
+    <p>Your previous orders</p>
+</header>
+
+{% if orders %}
+<div style="overflow-x: auto;">
+    <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <thead>
+            <tr style="background-color: #2c5f2d; color: white;">
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #1a3a1a;">Product</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #1a3a1a;">Quantity</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #1a3a1a;">Price per Unit</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #1a3a1a;">Order Date</th>
+                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #1a3a1a;">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 12px;">
+                    <a href="{% url 'product_detail' order.product.id %}" style="color: #2c5f2d; text-decoration: none;">
+                        {{ order.product.name }}
+                    </a>
+                </td>
+                <td style="padding: 12px;">{{ order.quantity }}</td>
+                <td style="padding: 12px;">${{ order.product.price }}</td>
+                <td style="padding: 12px;">{{ order.order_date|date:"M d, Y H:i" }}</td>
+                <td style="padding: 12px;">
+                    <span style="background-color: #d4edda; color: #155724; padding: 5px 10px; border-radius: 4px;">
+                        {% if order.ordered %}Completed{% else %}Pending{% endif %}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div style="margin-top: 20px; text-align: center;">
+    <a href="{% url 'products_list' %}" class="btn">Place New Order</a>
+    <a href="{% url 'dashboard' %}" class="btn btn-secondary" style="margin-left: 10px;">Back to Dashboard</a>
+</div>
+
+{% else %}
+<div style="background: white; padding: 40px; border-radius: 8px; text-align: center; margin: 40px 0;">
+    <h3 style="color: #666; margin-bottom: 20px;">No orders yet</h3>
+    <p style="color: #999; margin-bottom: 20px;">You haven't placed any orders yet. Start by browsing our products.</p>
+    <a href="{% url 'products_list' %}" class="btn">Browse Products</a>
+</div>
+{% endif %}
+{% endblock %}
