@@ -261,7 +261,7 @@
             <div class="user-info">
                 {% if user.is_authenticated %}
                 <span>Welcome, {{ user.username }}!</span>
-                <a href="{% url 'logout' %}" style="padding: 10px 15px;">Logout</a>
+                <a href="{% url 'confirm_logout' %}" style="padding: 10px 15px;">Logout</a>
                 {% else %}
                 <span>Not logged in</span>
                 {% endif %}
